@@ -1,6 +1,6 @@
 # TicketBookingSystem
 A movie ticket booking application built using Java, Spring Boot, Spring Security and MySQL.
-# 🎬 BookMyShow Clone
+# 🎬 TicketBooking 
 
 A backend application inspired by BookMyShow, developed using **Java and Spring Boot**. The project provides REST APIs for managing movies, theatres, screens, seats, shows, users, and movie ticket bookings.
 
