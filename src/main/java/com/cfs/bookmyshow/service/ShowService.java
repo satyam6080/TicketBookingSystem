@@ -1,0 +1,60 @@
+package com.cfs.bookmyshow.service;
+
+import com.cfs.bookmyshow.dto.ShowRequest;
+import com.cfs.bookmyshow.entity.Movie;
+import com.cfs.bookmyshow.entity.Screen;
+import com.cfs.bookmyshow.entity.Show;
+import com.cfs.bookmyshow.repository.ShowRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+
+public class ShowService {
+
+    private final ShowRepository showRepository;
+    private final MovieService movieService;
+    private  final ScreenService screenService;
+
+    public Show addShow(ShowRequest request){
+        Movie movie = movieService.getMovieById(request.getMovieId());
+        Screen screen = screenService.getScreenById(request.getScreenId());
+        Show show = Show.builder()
+                .movie(movie)
+                .screen(screen)
+                .showDate(request.getShowDate())
+                .startTime(LocalDateTime.from(request.getStartTime()))
+                .endTime(LocalDateTime.from(request.getEndTime()))
+                .ticketPrice(request.getTicketPrice())
+                .build();
+
+        return showRepository.save(show);
+    }
+
+    public List<Show> getAllShow(){
+          return  showRepository.findAll();
+    }
+
+    public Show getShowById(Long id){
+        return showRepository.findById(id)
+                .orElseThrow(() ->new RuntimeException("show is not found "+id));
+    }
+
+    public List<Show> getShowByMovie(Long movieId){
+        return showRepository.findByMovieId(movieId);
+    }
+
+    public List<Show> getShowByMovieAndDate(Long movieId, LocalDate date){
+        return showRepository.findByMovieIdAndShowDate(movieId,date);
+    }
+
+    public List<Show> getShowByScreen(Long screenId){
+        return showRepository.findByScreenId(screenId);
+    }
+
+}
